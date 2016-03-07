@@ -5,7 +5,7 @@ namespace Klsandbox\BillplzMock\Http\Controllers;
 use Input;
 use Log;
 
-class BillplzMockController
+class BillplzMockController extends \App\Http\Controllers\Controller
 {
     public function collections()
     {
