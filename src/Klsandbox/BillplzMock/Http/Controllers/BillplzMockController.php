@@ -4,6 +4,7 @@ namespace Klsandbox\BillplzMock\Http\Controllers;
 
 use Input;
 use Log;
+use App\Models\Order;
 
 class BillplzMockController extends \App\Http\Controllers\Controller
 {
@@ -61,19 +62,19 @@ JSON;
 
     public function viewBill($collectionId, $email, $name, $phone, $amount, $order_id)
     {
-        return view('billplz-mock.view-bill')
+        return view('billplz-mock::view-bill')
             ->with('collection_id', $collectionId)
             ->with('email', $email)
             ->with('name', $name)
             ->with('phone', $phone)
             ->with('amount', $amount)
-            ->with('order', App\Models\Order::find($order_id));
+            ->with('order', Order::find($order_id));
     }
 
     public function payAmount()
     {
         $order_id = Input::get('order_id');
-        $order = App\Models\Order::find($order_id);
+        $order = Order::find($order_id);
         $user_id = $order->user_id;
         $site_id = $order->site_id;
         $collection_id = Input::get('collection_id');
