@@ -4,7 +4,6 @@ namespace Klsandbox\BillplzMock\Http\Controllers;
 
 use Input;
 use Log;
-use App\Models\Order;
 
 class BillplzMockController extends \App\Http\Controllers\Controller
 {
@@ -37,8 +36,11 @@ JSON;
         $amount = Input::get('amount');
         $metadata = json_encode(Input::get('metadata'));
         $order_id = Input::get('metadata')['order_id'];
+        $user_id = Input::get('metadata')['user_id'];
+        $site_id = Input::get('metadata')['site_id'];
+        $redirect_url = Input::get('redirect_url');
 
-        $url = url("/billplz-mock/view-bill/$collectionId/$email/$name/$mobile/$amount/$order_id");
+        $url = url("/billplz-mock/view-bill/$collectionId/$email/$name/$mobile/$amount/$order_id/$user_id/$site_id/" . base64_encode($redirect_url));
 
 //        $title = Input::get('title');
         return
@@ -60,7 +62,7 @@ JSON;
 JSON;
     }
 
-    public function viewBill($collectionId, $email, $name, $phone, $amount, $order_id)
+    public function viewBill($collectionId, $email, $name, $phone, $amount, $order_id, $user_id, $site_id, $redirect_url)
     {
         return view('billplz-mock::view-bill')
             ->with('collection_id', $collectionId)
@@ -68,15 +70,18 @@ JSON;
             ->with('name', $name)
             ->with('phone', $phone)
             ->with('amount', $amount)
-            ->with('order', Order::find($order_id));
+            ->with('order_id', $order_id)
+            ->with('user_id', $user_id)
+            ->with('site_id', $site_id)
+            ->with('redirect_url', base64_decode($redirect_url));
     }
 
     public function payAmount()
     {
         $order_id = Input::get('order_id');
-        $order = Order::find($order_id);
-        $user_id = $order->user_id;
-        $site_id = $order->site_id;
+        $user_id = Input::get('user_id');
+        $site_id = Input::get('site_id');
+        $redirect_url = Input::get('redirect_url');
         $collection_id = Input::get('collection_id');
         $amount = Input::get('amount');
 
@@ -107,6 +112,6 @@ JSON;
 
         curl_close($curl);
 
-        return \Redirect::to('http://localhost:8000/order-management/view/' . $order_id);
+        return \Redirect::to($redirect_url);
     }
 }
