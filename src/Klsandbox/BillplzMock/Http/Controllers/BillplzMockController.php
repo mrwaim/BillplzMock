@@ -114,4 +114,44 @@ JSON;
 
         return \Redirect::to($redirect_url);
     }
+
+
+    public function declineAmount()
+    {
+        $order_id = Input::get('order_id');
+        $user_id = Input::get('user_id');
+        $site_id = Input::get('site_id');
+        $redirect_url = Input::get('redirect_url');
+        $collection_id = Input::get('collection_id');
+        $amount = Input::get('amount');
+
+        $data['id'] = 'W_79pJDk';
+        $data['collection_id'] = $collection_id;
+        $data['paid'] = false;
+        $data['state'] = 'paid';
+        $data['amount'] = $amount;
+        $data['paid_amount'] = 0;
+        $data['metadata[order_id]'] = $order_id;
+        $data['metadata[user_id]'] = $user_id;
+        $data['metadata[site_id]'] = $site_id;
+        $data['due_at'] = (new \Carbon\Carbon())->toDateTimeString();
+        $data['paid_at'] = (new \Carbon\Carbon())->toDateTimeString();
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_URL, 'http://localhost:8000/billplz/webhook');
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($curl, CURLOPT_USERPWD, config('billplz.auth'));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        Log::info(curl_getinfo($curl));
+        $result = curl_exec($curl);
+        Log::info($result);
+
+        curl_close($curl);
+
+        return \Redirect::to($redirect_url);
+    }
 }
