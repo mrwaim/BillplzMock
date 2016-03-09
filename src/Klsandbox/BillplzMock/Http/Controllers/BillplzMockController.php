@@ -98,6 +98,7 @@ JSON;
         $data['paid_at'] = (new \Carbon\Carbon())->toDateTimeString();
         $curl = curl_init();
 
+        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
         curl_setopt($curl, CURLOPT_URL, 'http://localhost:8000/billplz/webhook');
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_POST, 1);
@@ -107,6 +108,8 @@ JSON;
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
         Log::info(curl_getinfo($curl));
+        Log::info(curl_getinfo($curl, CURLINFO_HEADER_OUT));
+
         $result = curl_exec($curl);
         Log::info($result);
 
@@ -138,6 +141,8 @@ JSON;
         $data['paid_at'] = (new \Carbon\Carbon())->toDateTimeString();
         $curl = curl_init();
 
+        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
+
         curl_setopt($curl, CURLOPT_URL, 'http://localhost:8000/billplz/webhook');
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_POST, 1);
@@ -147,6 +152,8 @@ JSON;
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
         Log::info(curl_getinfo($curl));
+        Log::info(curl_getinfo($curl, CURLINFO_HEADER_OUT));
+
         $result = curl_exec($curl);
         Log::info($result);
 
