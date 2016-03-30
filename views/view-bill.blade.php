@@ -1,21 +1,7 @@
 @extends('app')
 
 @section('page-header')
-    <h2>Billplz Mock</h2>
-
-    <div class="right-wrapper pull-right">
-        <ol class="breadcrumbs">
-            <li>
-                <a href="index.html">
-                    <i class="fa fa-home"></i>
-                </a>
-            </li>
-            <li><span>Billplz Mock</span></li>
-            <li><span>View Bill</span></li>
-        </ol>
-
-        <div class="sidebar-right-toggle"></div>
-    </div>
+    @include('elements.page-header', ['section_title' => 'Billplz Mock', 'page_title' => 'View Bill'])
 @endsection
 
 @section('content')
