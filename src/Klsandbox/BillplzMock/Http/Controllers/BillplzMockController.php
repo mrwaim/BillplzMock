@@ -35,12 +35,12 @@ JSON;
         $mobile = Input::get('mobile');
         $amount = Input::get('amount');
         $metadata = json_encode(Input::get('metadata'));
-        $order_id = Input::get('metadata')['order_id'];
+        $proof_of_transfer_id = Input::get('metadata')['proof_of_transfer_id'];
         $user_id = Input::get('metadata')['user_id'];
         $site_id = Input::get('metadata')['site_id'];
         $redirect_url = Input::get('redirect_url');
 
-        $url = url("/billplz-mock/view-bill/$collectionId/$email/$name/$mobile/$amount/$order_id/$user_id/$site_id/" . base64_encode($redirect_url));
+        $url = url("/billplz-mock/view-bill/$collectionId/$email/$name/$mobile/$amount/$proof_of_transfer_id/$user_id/$site_id/" . base64_encode($redirect_url));
 
 //        $title = Input::get('title');
         return
@@ -62,7 +62,7 @@ JSON;
 JSON;
     }
 
-    public function viewBill($collectionId, $email, $name, $phone, $amount, $order_id, $user_id, $site_id, $redirect_url)
+    public function viewBill($collectionId, $email, $name, $phone, $amount, $proof_of_transfer_id, $user_id, $site_id, $redirect_url)
     {
         return view('billplz-mock::view-bill')
             ->with('collection_id', $collectionId)
@@ -70,7 +70,7 @@ JSON;
             ->with('name', $name)
             ->with('phone', $phone)
             ->with('amount', $amount)
-            ->with('order_id', $order_id)
+            ->with('proof_of_transfer_id', $proof_of_transfer_id)
             ->with('user_id', $user_id)
             ->with('site_id', $site_id)
             ->with('redirect_url', base64_decode($redirect_url));
@@ -78,7 +78,8 @@ JSON;
 
     public function payAmount()
     {
-        $order_id = Input::get('order_id');
+        Log::info('payAmount');
+        $proof_of_transfer_id = Input::get('proof_of_transfer_id');
         $user_id = Input::get('user_id');
         $site_id = Input::get('site_id');
         $redirect_url = Input::get('redirect_url');
@@ -91,11 +92,13 @@ JSON;
         $data['state'] = 'paid';
         $data['amount'] = $amount;
         $data['paid_amount'] = $amount;
-        $data['metadata[order_id]'] = $order_id;
+        $data['metadata[proof_of_transfer_id]'] = $proof_of_transfer_id;
         $data['metadata[user_id]'] = $user_id;
         $data['metadata[site_id]'] = $site_id;
         $data['due_at'] = (new \Carbon\Carbon())->toDateTimeString();
         $data['paid_at'] = (new \Carbon\Carbon())->toDateTimeString();
+
+        Log::info(print_r($data, true));
         $curl = curl_init();
 
         curl_setopt($curl, CURLINFO_HEADER_OUT, true);
@@ -121,7 +124,8 @@ JSON;
 
     public function declineAmount()
     {
-        $order_id = Input::get('order_id');
+        Log::info('declineAmount');
+        $proof_of_transfer_id = Input::get('proof_of_transfer_id');
         $user_id = Input::get('user_id');
         $site_id = Input::get('site_id');
         $redirect_url = Input::get('redirect_url');
@@ -130,15 +134,17 @@ JSON;
 
         $data['id'] = 'W_79pJDk';
         $data['collection_id'] = $collection_id;
-        $data['paid'] = false;
+        $data['paid'] = 0;
         $data['state'] = 'paid';
         $data['amount'] = $amount;
         $data['paid_amount'] = 0;
-        $data['metadata[order_id]'] = $order_id;
+        $data['metadata[proof_of_transfer_id]'] = $proof_of_transfer_id;
         $data['metadata[user_id]'] = $user_id;
         $data['metadata[site_id]'] = $site_id;
         $data['due_at'] = (new \Carbon\Carbon())->toDateTimeString();
         $data['paid_at'] = (new \Carbon\Carbon())->toDateTimeString();
+
+        Log::info(print_r($data, true));
         $curl = curl_init();
 
         curl_setopt($curl, CURLINFO_HEADER_OUT, true);

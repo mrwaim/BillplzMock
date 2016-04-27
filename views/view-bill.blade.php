@@ -26,8 +26,8 @@
                 </div>
                 <div class="panel-body">
                     <div class="row orders">
-                        <div class="col-xs-6 col-md-6">Order</div>
-                        <div class="col-xs-6 col-md-6">{{$order_id}}</div>
+                        <div class="col-xs-6 col-md-6">Proof Of Transfer</div>
+                        <div class="col-xs-6 col-md-6">{{$proof_of_transfer_id}}</div>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -37,7 +37,7 @@
                             <form class="form-horizontal" role="form" method="POST"
                                   action="{{ url('/billplz-mock/pay-amount') }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <input type="hidden" name="order_id" value="{{ $order_id }}">
+                                <input type="hidden" name="proof_of_transfer_id" value="{{ $proof_of_transfer_id }}">
                                 <input type="hidden" name="user_id" value="{{ $user_id }}">
                                 <input type="hidden" name="site_id" value="{{ $site_id }}">
                                 <input type="hidden" name="redirect_url" value="{{ $redirect_url }}">
@@ -49,10 +49,11 @@
                             <form class="form-horizontal" role="form" method="POST"
                                   action="{{ url('/billplz-mock/decline-amount') }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <input type="hidden" name="order_id" value="{{ $order_id }}">
+                                <input type="hidden" name="proof_of_transfer_id" value="{{ $proof_of_transfer_id }}">
                                 <input type="hidden" name="user_id" value="{{ $user_id }}">
                                 <input type="hidden" name="site_id" value="{{ $site_id }}">
                                 <input type="hidden" name="redirect_url" value="{{ $redirect_url }}">
+                                <input type="hidden" name="collection_id" value="{{ $collection_id }}">
                                 <input type="hidden" name="amount" value="{{ $amount }}">
 
                                 <button class="button">Decline Amount</button>
