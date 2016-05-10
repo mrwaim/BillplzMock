@@ -9,7 +9,7 @@ class BillplzMockController extends \App\Http\Controllers\Controller
 {
     public function collections()
     {
-        Log::info('input', Input::all());
+        Log::info('BillplzMockController-collections-input', Input::all());
         $title = Input::get('title');
         return
             <<<JSON
@@ -27,7 +27,7 @@ JSON;
 
     public function bills()
     {
-        Log::info('input', Input::all());
+        Log::info('BillplzMockController-bills-input', Input::all());
 
         $collectionId = Input::get('collection_id');
         $email = Input::get('email');
@@ -42,8 +42,11 @@ JSON;
 
         $url = url("/billplz-mock/view-bill/$collectionId/$email/$name/$mobile/$amount/$proof_of_transfer_id/$user_id/$site_id/" . base64_encode($redirect_url));
 
+
+        Log::info('BillplzMockController-bills-url' . $url);
+
 //        $title = Input::get('title');
-        return
+        $json =
             <<<JSON
 {
           "id": "8X0Iyzaw",
@@ -60,6 +63,11 @@ JSON;
           "url": "$url"
         }
 JSON;
+
+        Log::info('BillplzMockController-bills-json' . $json);
+
+        \Config::set('debugbar.enabled', false);
+        return response($json);
     }
 
     public function viewBill($collectionId, $email, $name, $phone, $amount, $proof_of_transfer_id, $user_id, $site_id, $redirect_url)
