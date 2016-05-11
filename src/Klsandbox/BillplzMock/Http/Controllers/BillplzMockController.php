@@ -25,6 +25,33 @@ class BillplzMockController extends \App\Http\Controllers\Controller
 JSON;
     }
 
+    public function getBill($bill_id)
+    {
+        $paid = true;
+        \Config::set('debugbar.enabled', false);
+        return
+            <<<JSON
+{
+          "id": "$bill_id",
+          "collection_id": "",
+          "paid": $paid,
+          "state": "pending",
+          "amount": 100 ,
+          "paid_amount": 100,
+          "due_at": "2015-3-9",
+          "email" :"email@email.com",
+          "mobile": 60126404099,
+          "name": "name",
+          "metadata": {
+          "proof_of_transfer_id" : 1,
+          "site_id" : 1,
+          "user_id" : 1
+           },
+          "url": "http://url"
+        }
+JSON;
+    }
+
     public function bills()
     {
         Log::info('BillplzMockController-bills-input', Input::all());
