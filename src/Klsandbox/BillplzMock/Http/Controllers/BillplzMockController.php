@@ -11,6 +11,7 @@ class BillplzMockController extends \App\Http\Controllers\Controller
     {
         Log::info('BillplzMockController-collections-input', Input::all());
         $title = Input::get('title');
+
         return
             <<<JSON
         {
@@ -29,6 +30,7 @@ JSON;
     {
         $paid = true;
         \Config::set('debugbar.enabled', false);
+
         return
             <<<JSON
 {
@@ -69,7 +71,6 @@ JSON;
 
         $url = url("/billplz-mock/view-bill/$collectionId/$email/$name/$mobile/$amount/$proof_of_transfer_id/$user_id/$site_id/" . base64_encode($redirect_url));
 
-
         Log::info('BillplzMockController-bills-url' . $url);
 
 //        $title = Input::get('title');
@@ -94,6 +95,7 @@ JSON;
         Log::info('BillplzMockController-bills-json' . $json);
 
         \Config::set('debugbar.enabled', false);
+
         return response($json);
     }
 
@@ -155,7 +157,6 @@ JSON;
 
         return \Redirect::to($redirect_url);
     }
-
 
     public function declineAmount()
     {
